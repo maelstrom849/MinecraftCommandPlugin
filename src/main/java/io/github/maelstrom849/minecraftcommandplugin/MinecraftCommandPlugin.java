@@ -6,6 +6,7 @@ public final class MinecraftCommandPlugin extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		this.getCommand("spawn").setExecutor(new SpawnExecutor(this));
+		this.getCommand("tpa").setExecutor(new TPAExecutor(this));
 	}
 	
 	@Override

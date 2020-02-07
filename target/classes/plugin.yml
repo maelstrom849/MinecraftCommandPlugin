@@ -1,8 +1,15 @@
 name: MinecraftCommandPlugin
-main: io.github.maelstrom849.multiclasstest.MulticlassTest
+main: io.github.maelstrom849.minecraftcommandplugin.MinecraftCommandPlugin
 version: 0.1
 author: maelstrom849
 commands:
   spawn:
-    description: This command teleports the sender to spawn
+    description: This command teleports the user to spawn
     usage: /<command>
+  tpa:
+    description: This command teleports the user to another user after the destination user accepts the prompt
+    usage: /<command> [player]
+permissions:
+  all:
+    description: Basic permission for basic commands. Everyone has this by default, but this exists so it can be revoked
+    default: true
