@@ -1,0 +1,8 @@
+name: MinecraftCommandPlugin
+main: io.github.maelstrom849.multiclasstest.MulticlassTest
+version: 0.1
+author: maelstrom849
+commands:
+  spawn:
+    description: This command teleports the sender to spawn
+    usage: /<command>
