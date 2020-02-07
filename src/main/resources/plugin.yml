@@ -6,3 +6,9 @@ commands:
   spawn:
     description: This command teleports the sender to spawn
     usage: /<command>
+    permission: <plugin name>.all
+    permission-message: You should have this permission
+permissions:
+  all:
+    description: Basic permission for basic commands. Everyone has this by default
+    default: true
