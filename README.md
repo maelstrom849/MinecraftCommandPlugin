@@ -8,3 +8,5 @@ Current commands:
 /spawn (teleport to spawn)
 /setspawnpoint (set point to spawn at)
 /tpa (prompt another player to teleport to them)
+
+Currently in version 0.3
