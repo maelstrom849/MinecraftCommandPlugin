@@ -1,14 +1,17 @@
 name: MinecraftCommandPlugin
 main: io.github.maelstrom849.minecraftcommandplugin.MinecraftCommandPlugin
-version: 0.1
+version: 0.3
 author: maelstrom849
 commands:
   spawn:
-    description: This command teleports the user to spawn
+    description: This command teleports the user to the spawn point set with setspawnpoint
     usage: /<command>
   tpa:
     description: This command teleports the user to another user after the destination user accepts the prompt
     usage: /<command> [player]
+  setspawnpoint:
+    description: This command sets the point that users will be teleported to with the spawn command. Can be used with no arguments to set spawn point to the current location, or 4 or 6 arguments to specify another location.
+    usage: /<command> ([world] [x] [y] [z] ([pitch] [yaw]))
 permissions:
   all:
     description: Basic permission for basic commands. Everyone has this by default, but this exists so it can be revoked

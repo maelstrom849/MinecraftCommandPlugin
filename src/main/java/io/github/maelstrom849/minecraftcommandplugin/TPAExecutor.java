@@ -1,5 +1,9 @@
 package io.github.maelstrom849.minecraftcommandplugin;
 
+/* Author: maelstrom849
+ * This class implements a mechanism to allow players
+ * to teleport to each other*/
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
