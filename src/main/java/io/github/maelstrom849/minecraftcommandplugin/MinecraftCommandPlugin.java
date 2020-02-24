@@ -17,7 +17,7 @@ public final class MinecraftCommandPlugin extends JavaPlugin {
 		this.getCommand("spawn").setExecutor(new SpawnExecutor(this));
 		this.getCommand("tpa").setExecutor(new TPAExecutor(this));
 		this.getCommand("setspawnpoint").setExecutor(new SetSpawnPointExecutor(this));
-		//TODO add commands to set multiple houses
+		this.getCommand("tp").setExecutor(new TPExecutor(this));
 	}
 	
 	@Override

@@ -35,6 +35,11 @@ public class TPAExecutor implements CommandExecutor {
 			sender.sendMessage(args[0] + " is not online.");
 			return false;
 		}
+		//Make sure the sender has permissions for this command
+		if (sender.hasPermission("MinecraftCommandPlugin.all") == false) {
+			sender.sendMessage("You do not have permissions for this command");
+			return false;
+		}
 		//Ensure the sender is a player, not the console, and start teleportation sequence
 		if (sender instanceof Player) {
 			//This creates a conversation between the plugin and player
