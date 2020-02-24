@@ -1,6 +1,7 @@
 io\github\maelstrom849\minecraftcommandplugin\Spawn.class
 io\github\maelstrom849\minecraftcommandplugin\TPAExecutor.class
 io\github\maelstrom849\minecraftcommandplugin\GetFloat.class
+io\github\maelstrom849\minecraftcommandplugin\TPExecutor.class
 io\github\maelstrom849\minecraftcommandplugin\MinecraftCommandPlugin.class
 io\github\maelstrom849\minecraftcommandplugin\TeleportAcceptPrompt.class
 io\github\maelstrom849\minecraftcommandplugin\SetSpawnPointExecutor.class
