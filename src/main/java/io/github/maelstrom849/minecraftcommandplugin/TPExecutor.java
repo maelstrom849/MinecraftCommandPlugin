@@ -23,7 +23,7 @@ public class TPExecutor implements CommandExecutor {
 		if (sender instanceof Player) {
 
 			// make sure the player has the most basic permissions
-			if (sender.hasPermission("MinecraftCommandPlugin.all")) {
+			if (sender.hasPermission("all")) {
 
 				// make sure the correct number of arguments is provided and all are numbers
 				if (args.length == 3 && GetFloat.getFloat(args[0]) != Float.NaN
