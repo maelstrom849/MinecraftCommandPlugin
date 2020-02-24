@@ -26,7 +26,7 @@ public class SpawnExecutor implements CommandExecutor {
 		if (sender instanceof Player) {
 
 			// Make sure sender has the basic permissions
-			if (sender.hasPermission("MinecraftCommandPlugin.all")) {
+			if (sender.hasPermission("all")) {
 
 				// Cast sender to player so that the teleport method can be accessed
 				Player player = (Player) sender;

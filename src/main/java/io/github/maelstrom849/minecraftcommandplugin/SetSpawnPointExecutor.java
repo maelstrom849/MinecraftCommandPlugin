@@ -23,7 +23,7 @@ public class SetSpawnPointExecutor implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		// Make sure sender has permissions to send command
-		if (sender.hasPermission("MinecraftCommandPlugin.admin")) {
+		if (sender.hasPermission("admin")) {
 
 			// If there are 4 arguments it is [world] [x] [y] [z]
 			// This command can be used by players or on the console

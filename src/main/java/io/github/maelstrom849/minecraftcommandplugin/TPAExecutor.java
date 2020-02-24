@@ -36,7 +36,7 @@ public class TPAExecutor implements CommandExecutor {
 			return false;
 		}
 		//Make sure the sender has permissions for this command
-		if (sender.hasPermission("MinecraftCommandPlugin.all") == false) {
+		if (sender.hasPermission("all") == false) {
 			sender.sendMessage("You do not have permissions for this command");
 			return false;
 		}
