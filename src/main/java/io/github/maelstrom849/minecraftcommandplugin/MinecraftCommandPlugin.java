@@ -18,6 +18,7 @@ public final class MinecraftCommandPlugin extends JavaPlugin {
 		this.getCommand("tpa").setExecutor(new TPAExecutor(this));
 		this.getCommand("setspawnpoint").setExecutor(new SetSpawnPointExecutor(this));
 		this.getCommand("tp").setExecutor(new TPExecutor(this));
+		this.getCommand("sqltest").setExecutor(new SQLTestExecutor(this));
 	}
 	
 	@Override
