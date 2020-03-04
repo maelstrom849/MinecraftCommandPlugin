@@ -47,6 +47,6 @@ public class TeleportAcceptPrompt implements Prompt {
 	// this prompt returns the text to display for the beginning prompt
 	@Override
 	public String getPromptText(ConversationContext arg0) {
-		return sender + " would like to teleplort to you. Allow this? (y or n)";
+		return sender.getName() + " would like to teleplort to you. Allow this? (y or n)";
 	}
 }
