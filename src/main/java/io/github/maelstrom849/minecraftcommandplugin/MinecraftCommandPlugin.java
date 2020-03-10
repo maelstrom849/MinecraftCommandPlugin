@@ -1,5 +1,7 @@
 package io.github.maelstrom849.minecraftcommandplugin;
 
+import org.bukkit.Bukkit;
+
 /*
  * Author: maelstrom849
  * This plugin is a custom-built plugin that fulfills many of the common wants
@@ -19,6 +21,11 @@ public final class MinecraftCommandPlugin extends JavaPlugin {
 		this.getCommand("setspawnpoint").setExecutor(new SetSpawnPointExecutor(this));
 		this.getCommand("tp").setExecutor(new TPExecutor(this));
 		this.getCommand("playerupdate").setExecutor(new PlayerUpdateExecutor(this));
+		this.getCommand("tpo").setExecutor(new TPOExecutor(this));
+		this.getCommand("tpm").setExecutor(new TPMExecutor(this));
+		
+		// set up the listener for the chat
+		Bukkit.getServer().getPluginManager().registerEvents(new ChatListener(), this);
 	}
 	
 	@Override

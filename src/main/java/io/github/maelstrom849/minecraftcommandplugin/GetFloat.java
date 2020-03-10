@@ -16,6 +16,8 @@ public class GetFloat {
 		// Tries to convert the string to a double, returns it if possible
 		try {
 			float num = Float.parseFloat(s);
+			if (num == Float.NEGATIVE_INFINITY || num == Float.POSITIVE_INFINITY)
+				return Float.NaN;
 			return num;
 			
 		// If it cannot make it a double, it instead returns NaN

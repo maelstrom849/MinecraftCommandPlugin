@@ -1,6 +1,6 @@
 name: MinecraftCommandPlugin
 main: io.github.maelstrom849.minecraftcommandplugin.MinecraftCommandPlugin
-version: 0.5.1
+version: 0.6
 author: maelstrom849
 commands:
   spawn:
@@ -16,8 +16,14 @@ commands:
     description: Teleports player to specified point.
     usage: /<command> [x] [y] [z]
   playerupdate:
-    description: Tests connection to MySQL database server
+    description: Adds all players not currently in the database to the database.
     usage: /<command>
+  tpm:
+    description: Teleports players to a location offset in the x and z directions by the amount of map chunks given
+    usage: /<command> [x] [z]
+  tpo:
+    description: Teleports players to a new point offset by the amount given
+    usage: /<command> [x] [y] [z]
 permissions:
   all:
     description: Basic permission for basic commands. Everyone has this by default, but this exists so it can be revoked
