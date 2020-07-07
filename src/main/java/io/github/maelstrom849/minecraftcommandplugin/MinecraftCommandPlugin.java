@@ -19,6 +19,12 @@ public final class MinecraftCommandPlugin extends JavaPlugin {
 		this.getCommand("setspawnpoint").setExecutor(new SetSpawnPointExecutor(this));
 		this.getCommand("tp").setExecutor(new TPExecutor(this));
 		this.getCommand("playerupdate").setExecutor(new PlayerUpdateExecutor(this));
+		this.getCommand("tpo").setExecutor(new TPOExecutor(this));
+		this.getCommand("tpm").setExecutor(new TPMExecutor(this));
+		
+		// set up the listener for the chat
+		// TODO ADD THIS IN LATER UPDATE
+		//Bukkit.getServer().getPluginManager().registerEvents(new ChatListener(), this);
 	}
 	
 	@Override

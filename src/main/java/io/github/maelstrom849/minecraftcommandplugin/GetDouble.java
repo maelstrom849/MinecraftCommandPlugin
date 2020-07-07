@@ -16,6 +16,9 @@ public class GetDouble {
 		// Tries to convert the string to a double, returns it if possible
 		try {
 			double num = Double.parseDouble(s);
+			// For the purposes of this plugin, we don't want infinites
+			if (num == Double.POSITIVE_INFINITY || num == Double.NEGATIVE_INFINITY)
+				return Double.NaN;
 			return num;
 			
 		// If it cannot make it a double, it instead returns NaN

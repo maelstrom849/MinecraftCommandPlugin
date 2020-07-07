@@ -11,6 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
 import org.bukkit.entity.Player;
+import org.bukkit.ChatColor;
 
 public class TeleportAcceptPrompt implements Prompt {
 	private CommandSender sender;
@@ -28,8 +29,20 @@ public class TeleportAcceptPrompt implements Prompt {
 	@Override
 	public Prompt acceptInput(ConversationContext arg0, String input) {
 		if (input.equalsIgnoreCase("y")) {
+			
+			// Cast sender to Player class
 			Player psend = (Player) sender;
+			
+			// Get destination location
 			Location destination = destinationPlayer.getLocation();
+			
+			// Make sure it is loaded for the person teleporting
+			sender.sendMessage(ChatColor.GOLD + "Loading...");
+			do {
+				destination.getChunk().load();
+			} while (!(destination.getChunk().isLoaded()));
+			
+			// Teleport
 			psend.teleport(destination);
 		}
 		// Regardless of the answer, there are no further prompts here, so 
@@ -47,6 +60,6 @@ public class TeleportAcceptPrompt implements Prompt {
 	// this prompt returns the text to display for the beginning prompt
 	@Override
 	public String getPromptText(ConversationContext arg0) {
-		return sender.getName() + " would like to teleplort to you. Allow this? (y or n)";
+		return ChatColor.DARK_GREEN + sender.getName() + ChatColor.YELLOW + " would like to teleplort to you. Allow this? (y or n)";
 	}
 }
