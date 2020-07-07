@@ -44,7 +44,7 @@ public class TPExecutor implements CommandExecutor {
 		// I don't assign them yet because the command can be executed with two or three inputs
 		for (int i=0;i<args.length;i++) {
 			double test = GetDouble.getDouble(args[i]);
-			if (test == Double.NaN) {
+			if (Double.isNaN(test)) {
 				sender.sendMessage(ChatColor.YELLOW + "One or more of the arguments you provided are not numbers.");
 				return false;
 			}
@@ -62,11 +62,18 @@ public class TPExecutor implements CommandExecutor {
 			// Cast sender to class Player so that teleport can be used
 			Player p = (Player) sender;
 
-			// Built-in function to find highest non-air block at a location
-			int y = p.getWorld().getHighestBlockYAt(x, z);
+			// Built-in function to find highest non-air block at a location, adding one so player
+			// is set on top of it
+			int y = p.getWorld().getHighestBlockYAt(x, z)+1;
 
 			// create Location destination
 			Location destination = new Location(p.getWorld(), x, y, z);
+			
+			// load destination
+			sender.sendMessage(ChatColor.GOLD + "Loading...");
+			do {
+				destination.getChunk().load();
+			} while (!(destination.getChunk().isLoaded()));
 
 			// check whether the player is riding a vehicle
 			if (p.getVehicle() != null)
@@ -101,6 +108,12 @@ public class TPExecutor implements CommandExecutor {
 				sender.sendMessage(ChatColor.YELLOW + "Teleporting to " + x + ", " + y + ", " + z + " will suffocate you.");
 				return true;
 			}
+			
+			// load destination
+			sender.sendMessage(ChatColor.GOLD + "Loading...");
+			do {
+				destination.getChunk().load();
+			} while (!(destination.getChunk().isLoaded()));
 
 			// check whether the player is riding a vehicle
 			if (p.getVehicle() != null)

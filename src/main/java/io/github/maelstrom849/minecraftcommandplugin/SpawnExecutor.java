@@ -1,5 +1,7 @@
 package io.github.maelstrom849.minecraftcommandplugin;
 
+import org.bukkit.ChatColor;
+
 /* Author: maelstrom849
  * This class executes the /spawn command, which simply teleports the user to spawn*/
 
@@ -7,7 +9,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.ChatColor;
 
+@SuppressWarnings("unused")
 public class SpawnExecutor implements CommandExecutor {
 
 	// Grab the full plugin in case it is necessary
@@ -41,6 +45,12 @@ public class SpawnExecutor implements CommandExecutor {
 		// the Spawn class
 		if (Spawn.getDefaultSpawn() == null)
 			Spawn.setDefaultSpawn(new Spawn());
+		
+		// Load default spawn if it is not loaded
+		sender.sendMessage(ChatColor.GOLD + "Loading...");
+		do {
+			Spawn.getDefaultSpawn().getChunk().load();
+		} while (!(Spawn.getDefaultSpawn().getChunk().isLoaded()));
 
 		// Teleport the player to the default spawn as stored in the Spawn class
 		player.teleport(Spawn.getDefaultSpawn());

@@ -29,8 +29,20 @@ public class TeleportAcceptPrompt implements Prompt {
 	@Override
 	public Prompt acceptInput(ConversationContext arg0, String input) {
 		if (input.equalsIgnoreCase("y")) {
+			
+			// Cast sender to Player class
 			Player psend = (Player) sender;
+			
+			// Get destination location
 			Location destination = destinationPlayer.getLocation();
+			
+			// Make sure it is loaded for the person teleporting
+			sender.sendMessage(ChatColor.GOLD + "Loading...");
+			do {
+				destination.getChunk().load();
+			} while (!(destination.getChunk().isLoaded()));
+			
+			// Teleport
 			psend.teleport(destination);
 		}
 		// Regardless of the answer, there are no further prompts here, so 
