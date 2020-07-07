@@ -2,7 +2,6 @@ io\github\maelstrom849\minecraftcommandplugin\TPAExecutor.class
 io\github\maelstrom849\minecraftcommandplugin\DatabaseInfo.class
 io\github\maelstrom849\minecraftcommandplugin\MinecraftCommandPlugin.class
 io\github\maelstrom849\minecraftcommandplugin\TeleportAcceptPrompt.class
-io\github\maelstrom849\minecraftcommandplugin\ChatListener.class
 io\github\maelstrom849\minecraftcommandplugin\PlayerUpdateExecutor.class
 io\github\maelstrom849\minecraftcommandplugin\SetSpawnPointExecutor.class
 io\github\maelstrom849\minecraftcommandplugin\Spawn.class

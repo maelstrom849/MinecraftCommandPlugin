@@ -26,7 +26,7 @@ public class PlayerUpdateExecutor implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		// This commond can be sent both by a player with the admin privilege or by the console
+		// This command can be sent both by a player with the admin privilege or by the console
 		if (sender.hasPermission("admin")) {
 			
 			// Here we create blank lists of online and offline players.

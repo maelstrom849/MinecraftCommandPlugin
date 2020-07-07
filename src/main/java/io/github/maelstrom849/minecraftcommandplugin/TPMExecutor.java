@@ -5,8 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import net.md_5.bungee.api.ChatColor;
+import org.bukkit.ChatColor;
 
 public class TPMExecutor implements CommandExecutor {
 
@@ -20,29 +19,36 @@ public class TPMExecutor implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
+		// Command can only be run by players
 		if (!(sender instanceof Player)) {
-			sender.sendMessage(ChatColor.AQUA + "You must be a player to use this command.");
+			sender.sendMessage(ChatColor.YELLOW + "You must be a player to use this command.");
 			return true;
 		}
 
+		// Sender must have basic permissions
 		if (!(sender.hasPermission("all"))) {
-			sender.sendMessage(ChatColor.AQUA + "You do not have permission to use this command.");
+			sender.sendMessage(ChatColor.YELLOW + "You do not have permission to use this command.");
 			return true;
 		}
 
+		// Command must have 2 arguments
 		if (args.length != 2) {
-			sender.sendMessage(ChatColor.AQUA + "You must have two arguments of the form (# of map units north-south, # of map units east-west).");
+			sender.sendMessage(ChatColor.YELLOW + "You must have two arguments of the form (# of map units north-south, # of map units east-west).");
 			return false;
 		}
 
+		// Cast both values now so it's not done twice if they pass the check
 		double delta_x = GetDouble.getDouble(args[0]);
 		double delta_z = GetDouble.getDouble(args[1]);
 
+		
+		// Both arguments must be numbers
 		if (delta_x == Double.NaN || delta_z == Double.NaN) {
-			sender.sendMessage(ChatColor.AQUA + "One or both of the arguments you provided are not numbers. They must be numbers for this command to work.");
+			sender.sendMessage(ChatColor.YELLOW + "One or both of the arguments you provided are not numbers. They must be numbers for this command to work.");
 			return false;
 		}
 
+		// 
 		Player p = (Player) sender;
 		double xBlocks = delta_x * 512;
 		double zBlocks = delta_z * -512;
