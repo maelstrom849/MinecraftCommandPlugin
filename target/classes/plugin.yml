@@ -14,7 +14,7 @@ commands:
     usage: /<command> ([world] [x] [y] [z] ([pitch] [yaw]))
   tp:
     description: Teleports player to specified point.
-    usage: /<command> [x] [y] [z]
+    usage: /<command> [x] [y] [z] or /<command> [x] [z]
   playerupdate:
     description: Adds all players not currently in the database to the database.
     usage: /<command>

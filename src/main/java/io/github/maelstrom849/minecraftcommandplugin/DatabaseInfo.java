@@ -12,7 +12,7 @@ public class DatabaseInfo {
 	// Username to connect to the server
 	private static String user = "user_46714";
 	// Password to connect to the server
-	private static String pass = "63e1b3eb1f";
+	private static String pass = "********";
 	
 	// Combines host, port, and name to get the full address of our database
 	public static String getAddress() {

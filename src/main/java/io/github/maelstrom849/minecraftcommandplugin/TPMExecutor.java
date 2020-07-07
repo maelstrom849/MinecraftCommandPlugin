@@ -1,7 +1,6 @@
 package io.github.maelstrom849.minecraftcommandplugin;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -20,58 +19,67 @@ public class TPMExecutor implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (sender instanceof Player && sender.hasPermission("all")) {
-			if (args.length == 2 && GetDouble.getDouble(args[0]) != Double.NaN
-					&& GetDouble.getDouble(args[1]) != Double.NaN) {
-				Player p = (Player) sender;
-				double xChange = GetDouble.getDouble(args[0]) * 512;
-				double zChange = GetDouble.getDouble(args[1]) * 512;
-				sender.sendMessage(xChange + " " + zChange);
-				Location currentLocation = p.getLocation();
-				int newY = 50;
-				Location newLocation = new Location(currentLocation.getWorld(), currentLocation.getBlockX() + xChange,
-						newY, currentLocation.getBlockZ() + zChange);
-				Location newHeadLocation = new Location(currentLocation.getWorld(),
-						currentLocation.getBlockX() + xChange, newY + 1, currentLocation.getBlockZ() + zChange);
-				// Make sure the player's head is not in a block or underwater
-				while (!((newLocation.getBlock().isEmpty()) || (newLocation.getBlock().getType() == Material.WATER))
-						&& !(newHeadLocation.getBlock().isEmpty())) {
-					newY++;
-					newLocation.setY(newY);
-					newHeadLocation.setY(newY + 1);
-				}
-				Location finalLocation = new Location(currentLocation.getWorld(), currentLocation.getX() + xChange,
-						newY+1, currentLocation.getZ() + zChange);
-				p.setInvulnerable(true);
-				p.sendMessage("invulnerable.");
-				finalLocation.getChunk().load();
-				p.sendMessage("loading chunk.");
-				try {
-					Thread.sleep(2000);
-				} catch (InterruptedException e) {
-					p.sendMessage("Uh oh.");
-					e.printStackTrace();
-				}
-				p.teleport(finalLocation);
-				p.sendMessage("teleporting");
-				/*try {
-					Thread.sleep(5000);
-				} catch (InterruptedException e) {
-					p.sendMessage("Uh oh.");
-					e.printStackTrace();
-				}*/
-				p.setInvulnerable(false);
-				p.sendMessage("no longer invulnerable.");
-				return true;
-			} else {
-				sender.sendMessage(ChatColor.YELLOW + "Something went wrong with your arguments.");
-				sender.sendMessage(ChatColor.YELLOW + "Please ensure that you are submitting 2 numerical arguments.");
-				return true;
-			}
-		} else {
-			sender.sendMessage(
-					"Either you're not a person, or you don't have permission to use this. So you're basically not a person.");
+
+		if (!(sender instanceof Player)) {
+			sender.sendMessage(ChatColor.AQUA + "You must be a player to use this command.");
 			return true;
 		}
+
+		if (!(sender.hasPermission("all"))) {
+			sender.sendMessage(ChatColor.AQUA + "You do not have permission to use this command.");
+			return true;
+		}
+
+		if (args.length != 2) {
+			sender.sendMessage(ChatColor.AQUA + "You must have two arguments of the form (# of map units north-south, # of map units east-west).");
+			return false;
+		}
+
+		double delta_x = GetDouble.getDouble(args[0]);
+		double delta_z = GetDouble.getDouble(args[1]);
+
+		if (delta_x == Double.NaN || delta_z == Double.NaN) {
+			sender.sendMessage(ChatColor.AQUA + "One or both of the arguments you provided are not numbers. They must be numbers for this command to work.");
+			return false;
+		}
+
+		Player p = (Player) sender;
+		double xBlocks = delta_x * 512;
+		double zBlocks = delta_z * -512;
+		String xDirection, zDirection;
+		if (xBlocks < 0) {
+			xDirection = "West";
+		} else {
+			xDirection = "East";
+		}
+		if (zBlocks < 0) {
+			zDirection = "South";
+		} else {
+			zDirection = "North";
+		}
+		if (xBlocks == 0) {
+			sender.sendMessage(ChatColor.AQUA + "You are being teleported " + Math.abs(delta_z) + " map units (" + 
+					Math.abs(zBlocks) + " blocks) " + zDirection + ".");
+		} else if (zBlocks == 0) {
+			sender.sendMessage(ChatColor.AQUA + "You are being teleported " + Math.abs(delta_x) + " map units (" + 
+					Math.abs(xBlocks) + " blocks) " + xDirection + ".");
+		} else {
+			sender.sendMessage(ChatColor.AQUA + "You are being teleported " + Math.abs(delta_x) + " map units (" + 
+					Math.abs(xBlocks) + " blocks) " + xDirection + " and " + Math.abs(delta_z) + "map units (" +
+					Math.abs(zBlocks) + " blocks)" + zDirection + ".");
+		}
+		
+		Location current = p.getLocation();
+		
+		int x = (int) Math.abs(current.getBlockX() + xBlocks);
+		int z = (int) Math.abs(current.getBlockZ() + zBlocks);
+		int y = current.getWorld().getHighestBlockYAt(x, z);
+		
+		Location destination = new Location(current.getWorld(), x, y, z);
+		
+		do {
+			destination.getChunk().load();
+		} while (!destination.getChunk().isLoaded());
+		return true;
 	}
 }

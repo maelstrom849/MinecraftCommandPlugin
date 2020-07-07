@@ -27,7 +27,7 @@ public class PlayerUpdateExecutor implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		// This commond can be sent both by a player with the admin privilege or by the console
-		if (sender.hasPermission("admin") || !(sender instanceof Player)) {
+		if (sender.hasPermission("admin")) {
 			
 			// Here we create blank lists of online and offline players.
 			// Unfortunately because of how bukkit stores player types, we can't combine
@@ -86,6 +86,7 @@ public class PlayerUpdateExecutor implements CommandExecutor {
 				// Alert sender about how many players were added.
 				sender.sendMessage(
 						"The update has been completed. " + added + " new players were added to the database.");
+				connection.close();
 				return true;
 				// Check for errors
 			} catch (ClassNotFoundException e) {

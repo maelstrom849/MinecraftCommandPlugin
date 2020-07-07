@@ -13,13 +13,13 @@ import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.entity.Player;
 
 public class TPAExecutor implements CommandExecutor {
-	
+
 	public MinecraftCommandPlugin mcp;
 	// Grab a copy of the plugin itself in case it is needed
 	public TPAExecutor(MinecraftCommandPlugin mcp) {
 		this.mcp = mcp;
 	}
-	
+
 	ConversationFactory factory = new ConversationFactory(mcp);
 
 	@Override
@@ -33,30 +33,29 @@ public class TPAExecutor implements CommandExecutor {
 		//Make sure the destination player is online before executing the rest
 		if (destinationPlayer == null) {
 			sender.sendMessage(args[0] + " is not online.");
-			return false;
+			return true;
 		}
 		//Make sure the sender has permissions for this command
-		if (sender.hasPermission("all") == false) {
+		if (!(sender.hasPermission("all"))) {
 			sender.sendMessage("You do not have permissions for this command");
-			return false;
+			return true;
 		}
 		//Ensure the sender is a player, not the console, and start teleportation sequence
-		if (sender instanceof Player) {
-			//This creates a conversation between the plugin and player
-			//The conversation starts with the TeleportAcceptPrompt
-			//This shows the prompt text and if accepted teleports the 
-			//Player to the destination player's location
-			//Else nothing happens
-			Conversation conv = factory
-					.withFirstPrompt(new TeleportAcceptPrompt(sender, destinationPlayer))
-					.withEscapeSequence("n")
-					.buildConversation((Player) destinationPlayer);
-			conv.begin();
-			return true;
-		} else {
+		if (!(sender instanceof Player)) {
 			sender.sendMessage("Only players can use this command.");
+			return true;
 		}
-		return false;
+		//This creates a conversation between the plugin and player
+		//The conversation starts with the TeleportAcceptPrompt
+		//This shows the prompt text and if accepted teleports the 
+		//Player to the destination player's location
+		//Else nothing happens
+		Conversation conv = factory
+				.withFirstPrompt(new TeleportAcceptPrompt(sender, destinationPlayer))
+				.withEscapeSequence("n")
+				.buildConversation((Player) destinationPlayer);
+		conv.begin();
+		return true;
 	}
 
 }

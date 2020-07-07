@@ -19,27 +19,34 @@ public class TPOExecutor implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (sender instanceof Player && sender.hasPermission("all")) {
-			if (args.length == 3 && GetDouble.getDouble(args[0]) != Double.NaN &&
-					GetDouble.getDouble(args[1]) != Double.NaN &&
-					GetDouble.getDouble(args[2]) != Double.NaN) {
-				Player p = (Player) sender;
-				double xChange = GetDouble.getDouble(args[0]);
-				double yChange = GetDouble.getDouble(args[1]);
-				double zChange = GetDouble.getDouble(args[2]);
-				Location currentLocation = p.getLocation();
-				p.teleport(new Location(currentLocation.getWorld(), currentLocation.getBlockX() + xChange,
-						currentLocation.getBlockY() + yChange, currentLocation.getBlockZ() + zChange));
-				return true;
-			} else {
-				sender.sendMessage(ChatColor.YELLOW + "Something went wrong with your arguments.");
-				sender.sendMessage(ChatColor.YELLOW + "Please ensure that you are submitting 3 numerical arguments.");
-				return true;
-			}
-		} else {
-			sender.sendMessage("Either you're not a person, or you don't have permission to use this. So you're basically not a person.");
+		if (!(sender instanceof Player)) {
+			sender.sendMessage(ChatColor.YELLOW + "Only players can use this command.");
 			return true;
 		}
+		if (!(sender.hasPermission("all"))) {
+			sender.sendMessage(ChatColor.YELLOW + "You do not have permission to use this command.");
+			return true;
+		}
+
+		if (args.length != 3) {
+			sender.sendMessage(ChatColor.YELLOW + "You must provide 3 arguments for this to work.");
+			return false;
+		}
+
+		double x_change = GetDouble.getDouble(args[0]);
+		double y_change = GetDouble.getDouble(args[1]);
+		double z_change = GetDouble.getDouble(args[2]);
+		
+		if (x_change == Double.NaN || y_change == Double.NaN || z_change == Double.NaN) {
+			sender.sendMessage(ChatColor.YELLOW + "One or more of the arguments you provided is not a number.");
+			return false;
+		}
+
+		Player p = (Player) sender;
+		Location currentLocation = p.getLocation();
+		p.teleport(new Location(currentLocation.getWorld(), currentLocation.getBlockX() + x_change,
+				currentLocation.getBlockY() + y_change, currentLocation.getBlockZ() + z_change));
+		return true;
 	}
 
 }
