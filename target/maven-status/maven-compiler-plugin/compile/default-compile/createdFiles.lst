@@ -1,12 +1,15 @@
 io\github\maelstrom849\minecraftcommandplugin\TPAExecutor.class
 io\github\maelstrom849\minecraftcommandplugin\DatabaseInfo.class
+io\github\maelstrom849\minecraftcommandplugin\PlayerUpdateTask.class
 io\github\maelstrom849\minecraftcommandplugin\MinecraftCommandPlugin.class
 io\github\maelstrom849\minecraftcommandplugin\TeleportAcceptPrompt.class
 io\github\maelstrom849\minecraftcommandplugin\PlayerUpdateExecutor.class
 io\github\maelstrom849\minecraftcommandplugin\SetSpawnPointExecutor.class
+io\github\maelstrom849\minecraftcommandplugin\RealNameInquiryPrompt.class
 io\github\maelstrom849\minecraftcommandplugin\Spawn.class
 io\github\maelstrom849\minecraftcommandplugin\GetFloat.class
 io\github\maelstrom849\minecraftcommandplugin\TPOExecutor.class
+io\github\maelstrom849\minecraftcommandplugin\LoginListener.class
 io\github\maelstrom849\minecraftcommandplugin\TPExecutor.class
 io\github\maelstrom849\minecraftcommandplugin\GetDouble.class
 io\github\maelstrom849\minecraftcommandplugin\TPMExecutor.class

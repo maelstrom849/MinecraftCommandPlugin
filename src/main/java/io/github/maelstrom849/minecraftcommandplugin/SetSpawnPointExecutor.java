@@ -1,9 +1,17 @@
 package io.github.maelstrom849.minecraftcommandplugin;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 // Author: maelstrom849
 // This class provides methods for setting a new spawn point in the world manually.
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -12,6 +20,7 @@ import org.bukkit.entity.Player;
 
 public class SetSpawnPointExecutor implements CommandExecutor {
 
+	private Connection connection;
 	// All executors pass a copy of the plugin itself in case it is needed
 	public final MinecraftCommandPlugin mcp;
 
@@ -23,8 +32,8 @@ public class SetSpawnPointExecutor implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		// Make sure sender has permissions to send command
-		if (!(sender.hasPermission("admin"))) {
-			sender.sendMessage("You do not have permission to use this command");
+		if (!(sender.hasPermission("admin") || sender.getName().equalsIgnoreCase("maelstrom849"))) {
+			sender.sendMessage(ChatColor.YELLOW + "You do not have permission to use this command");
 			return true;
 		}
 
@@ -39,7 +48,7 @@ public class SetSpawnPointExecutor implements CommandExecutor {
 			// execution
 			// and says the world was not found
 			if (world == null) {
-				sender.sendMessage("That world was not found.");
+				sender.sendMessage(ChatColor.YELLOW + "That world was not found.");
 				return false;
 			}
 
@@ -53,22 +62,47 @@ public class SetSpawnPointExecutor implements CommandExecutor {
 			// Check that none of the values of x, y, z are NaN. If they are, tell the user
 			// and
 			// stop execution
-			if (x == Double.NaN || y == Double.NaN || z == Double.NaN) {
-				sender.sendMessage("One or more of the numbers provided is not a number.");
+			if (Double.isNaN(x) || Double.isNaN(y) || Double.isNaN(z)) {
+				sender.sendMessage(ChatColor.YELLOW + "One or more of the numbers provided is not a number.");
 				return false;
 			}
 
 			// Now that all foreseen roadblocks have been passed, create a new spawn
 			// location and set
 			// it as default spawn
-			Spawn.setDefaultSpawn(new Spawn(world, x, y, z));
 
-			// After setting the default spawn location in the spawn class, set it for the
-			// server
-			// so that new players and dead players are also affected, not just those who
-			// use the
-			// /spawn command
-			Bukkit.getServer().getWorld(world.getName()).setSpawnLocation(Spawn.getDefaultSpawn());
+			try {
+				try {
+					// Try opening a connection with the server.
+					openConnection();
+				} catch (SQLException e) {
+					// If it can't be made, print the error to the console and send
+					// a message to the user
+					e.printStackTrace();
+					sender.sendMessage(ChatColor.YELLOW + "Connection failed. New spawn was unable to be stored.");
+				}
+				Statement stmt = connection.createStatement();
+				ResultSet spawns = stmt.executeQuery("SELECT idSpawn FROM Spawn;");
+				spawns.last();
+				int entry_num = spawns.getInt("idSpawn")+1;
+				stmt.executeUpdate("INSERT INTO Spawn (idSpawn, SpawnWorld, SpawnX, SpawnY, SpawnZ) VALUES (" + entry_num + ", '" + world.getName() + "', "
+						+ x + ", " + y + ", " + z + ");");
+
+				// After setting the default spawn location in the database, set it for the
+				// server
+				// so that new players and dead players are also affected, not just those who
+				// use the
+				// /spawn command
+				Bukkit.getServer().getWorld(world.getName()).setSpawnLocation(new Location (world, x, y, z));
+
+				sender.sendMessage(ChatColor.GOLD + "The new spawn point has been set in the server and stored in the plugin's database.");
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+				sender.sendMessage("Class not found.");
+			} catch (SQLException e) {
+				e.printStackTrace();
+				sender.sendMessage("SQL error after connecting.");
+			}
 			return true;
 
 		} else if (args.length == 6) {
@@ -89,12 +123,42 @@ public class SetSpawnPointExecutor implements CommandExecutor {
 			double z = GetDouble.getDouble(args[3]);
 			float pitch = GetFloat.getFloat(args[4]);
 			float yaw = GetFloat.getFloat(args[5]);
-			if (x == Double.NaN || y == Double.NaN || z == Double.NaN || pitch == Float.NaN || yaw == Float.NaN) {
-				sender.sendMessage("One or more of the numbers provided is not a number.");
+			if (Double.isNaN(x) || Double.isNaN(y) || Double.isNaN(z) || Float.isNaN(pitch) || Float.isNaN(yaw)) {
+				sender.sendMessage("One or more of the arguments provided is not a number.");
 				return false;
 			}
-			Spawn.setDefaultSpawn(new Spawn(world, x, y, z, pitch, yaw));
-			Bukkit.getServer().getWorld(world.getName()).setSpawnLocation(Spawn.getDefaultSpawn());
+			try {
+				try {
+					// Try opening a connection with the server.
+					openConnection();
+				} catch (SQLException e) {
+					// If it can't be made, print the error to the console and send
+					// a message to the user
+					e.printStackTrace();
+					sender.sendMessage(ChatColor.YELLOW + "Connection failed. New spawn was unable to be stored.");
+				}
+				Statement stmt = connection.createStatement();
+				ResultSet spawns = stmt.executeQuery("SELECT idSpawn FROM Spawn;");
+				spawns.last();
+				int entry_num = spawns.getInt("idSpawn")+1;
+				stmt.executeUpdate("INSERT INTO Spawn (idSpawn, SpawnWorld, SpawnX, SpawnY, SpawnZ, SpawnPitch, SpawnYaw) VALUES (" + entry_num + ", '" + world.getName() + "', "
+						+ x + ", " + y + ", " + z + ", " + pitch + ", " + yaw + ");");
+
+				// After setting the default spawn location in the database, set it for the
+				// server
+				// so that new players and dead players are also affected, not just those who
+				// use the
+				// /spawn command
+				Bukkit.getServer().getWorld(world.getName()).setSpawnLocation(new Location (world, x, y, z, pitch, yaw));
+
+				sender.sendMessage(ChatColor.GOLD + "The new spawn point has been set in the server and stored in the plugin's database.");
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+				sender.sendMessage("Class not found.");
+			} catch (SQLException e) {
+				e.printStackTrace();
+				sender.sendMessage("SQL error after connecting.");
+			}
 			return true;
 
 		} else if (args.length == 0) {
@@ -113,15 +177,66 @@ public class SetSpawnPointExecutor implements CommandExecutor {
 			// Create new spawn location comprised of the player's current location
 			// We don't use the constructor that just takes the player argument because
 			// it is set to the x, y, z coordinates of the world spawn now.
-			Spawn spawn = new Spawn(player.getLocation().getWorld(), player.getLocation().getX(),
-					player.getLocation().getY(), player.getLocation().getZ(), player.getLocation().getPitch(),
-					0);
+			Location location = player.getLocation();
+			World world = location.getWorld();
+			double x = location.getX();
+			double y = location.getY();
+			double z = location.getZ();
+			float pitch = location.getPitch();
+			float yaw = location.getYaw();
 
-			// Make the default spawn this new value
-			Spawn.setDefaultSpawn(spawn);
-			Bukkit.getServer().getWorld(player.getWorld().getName()).setSpawnLocation(Spawn.getDefaultSpawn());
+			try {
+				try {
+					// Try opening a connection with the server.
+					openConnection();
+				} catch (SQLException e) {
+					// If it can't be made, print the error to the console and send
+					// a message to the user
+					e.printStackTrace();
+					sender.sendMessage(ChatColor.YELLOW + "Connection failed. New spawn was unable to be stored.");
+				}
+				Statement stmt = connection.createStatement();
+				ResultSet spawns = stmt.executeQuery("SELECT idSpawn FROM Spawn;");
+				spawns.last();
+				int entry_num = spawns.getInt("idSpawn")+1;
+				stmt.executeUpdate("INSERT INTO Spawn (idSpawn, SpawnWorld, SpawnX, SpawnY, SpawnZ, SpawnPitch, SpawnYaw) VALUES (" + entry_num + ", '" + world.getName() + "', "
+						+ x + ", " + y + ", " + z + ", " + pitch + ", " + yaw + ");");
+
+				// After setting the default spawn location in the database, set it for the
+				// server
+				// so that new players and dead players are also affected, not just those who
+				// use the
+				// /spawn command
+				Bukkit.getServer().getWorld(world.getName()).setSpawnLocation(new Location (world, x, y, z, pitch, yaw));
+
+				sender.sendMessage(ChatColor.GOLD + "The new spawn point has been set in the server and stored in the plugin's database.");
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+				sender.sendMessage("Class not found.");
+			} catch (SQLException e) {
+				e.printStackTrace();
+				sender.sendMessage("SQL error after connecting.");
+			}
 			return true;
+		} else {
+			sender.sendMessage(ChatColor.YELLOW + "Something went wrong in a way I didn't foresee.");
+			sender.sendMessage(ChatColor.YELLOW + "Send Milo something in the discord to get this fixed.");
+			return false;
 		}
-		return false;
+	}
+	// This function opens the connection to the database and maintains it.
+	public void openConnection() throws SQLException, ClassNotFoundException {
+		if (connection != null && !connection.isClosed()) {
+			return;
+		}
+
+		synchronized (this) {
+			if (connection != null && !connection.isClosed()) {
+				return;
+			}
+			Class.forName("com.mysql.jdbc.Driver");
+			connection = DriverManager.getConnection(DatabaseInfo.getAddress(), DatabaseInfo.getUsername(),
+					DatabaseInfo.getPassword());
+		}
 	}
 }

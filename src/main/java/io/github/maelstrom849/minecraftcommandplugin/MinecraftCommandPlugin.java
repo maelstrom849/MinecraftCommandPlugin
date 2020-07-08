@@ -22,9 +22,8 @@ public final class MinecraftCommandPlugin extends JavaPlugin {
 		this.getCommand("tpo").setExecutor(new TPOExecutor(this));
 		this.getCommand("tpm").setExecutor(new TPMExecutor(this));
 		
-		// set up the listener for the chat
-		// TODO ADD THIS IN LATER UPDATE
-		//Bukkit.getServer().getPluginManager().registerEvents(new ChatListener(), this);
+		// Each listener is created
+		new LoginListener(this);
 	}
 	
 	@Override
