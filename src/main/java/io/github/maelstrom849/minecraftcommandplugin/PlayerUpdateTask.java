@@ -54,7 +54,7 @@ public class PlayerUpdateTask extends BukkitRunnable {
 				statement.executeUpdate("INSERT INTO Players (PlayerName) VALUES ('" + this.player.getName() + "');");
 			}
 			
-			rs = statement.executeQuery("SELECT PersonRName FROM Players WHERE PlayerName = '" + this.player.getName() + ";");
+			rs = statement.executeQuery("SELECT PersonRName FROM Players WHERE PlayerName = '" + this.player.getName() + "';");
 			rs.first();
 			String realName = rs.getString(1);
 			if (realName == null) {

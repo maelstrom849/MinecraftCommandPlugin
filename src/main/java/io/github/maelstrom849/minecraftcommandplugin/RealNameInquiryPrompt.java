@@ -31,7 +31,9 @@ public class RealNameInquiryPrompt implements Prompt {
 
 	@Override
 	public Prompt acceptInput(ConversationContext context, String input) {
-		String shortenedName = input.substring(0, 50);
+		if (input.length() > 50) {
+			input = input.substring(0, 50);
+		}
 		try {
 			try {
 				// Try opening a connection with the server.
@@ -44,7 +46,7 @@ public class RealNameInquiryPrompt implements Prompt {
 				return END_OF_CONVERSATION;
 			}
 			Statement s = connection.createStatement();
-			s.executeUpdate("UPDATE Players SET PersonRName = '" + shortenedName + "' WHERE PlayerName = '" + p.getName() + "';");
+			s.executeUpdate("UPDATE Players SET PersonRName = '" + input + "' WHERE PlayerName = '" + p.getName() + "';");
 			p.sendMessage("Thanks!");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

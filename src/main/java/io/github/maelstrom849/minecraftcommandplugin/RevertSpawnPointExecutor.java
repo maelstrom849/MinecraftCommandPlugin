@@ -58,11 +58,11 @@ public class RevertSpawnPointExecutor implements CommandExecutor {
 			Statement stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM Spawn;");
 			rs.last();
-			if (rs.getInt("idSpawn") == 0) {
+			int mostRecent = rs.getInt("idSpawn");
+			if (mostRecent == 0) {
 				sender.sendMessage(ChatColor.YELLOW + "Only one spawn location remains. Cannot be reverted further.");
 				return true;
 			} else {
-				int mostRecent = rs.getInt(1);
 				stmt.executeUpdate("DELETE FROM Spawn WHERE idSpawn = " + mostRecent + ";");
 				sender.sendMessage(ChatColor.GOLD + "The most recent Spawn setting (" + rs.getString("SpawnX") +
 						", " + rs.getString("SpawnY") + ", " + rs.getString("SpawnZ") + ") has been " + ChatColor.RED + "removed.");
