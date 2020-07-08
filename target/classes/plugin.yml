@@ -27,6 +27,9 @@ commands:
   revertspawnpoint:
     description: Deletes the most recently set spawn point and reverts to the previous. Will not delete the last remaining spawn point.
     usage: /<command>
+  checkname:
+    description: Gets the real name for a player, given their player name.
+    usage: /<command> [player]
 permissions:
   all:
     description: Basic permission for basic commands. Everyone has this by default, but this exists so it can be revoked
