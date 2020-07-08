@@ -36,28 +36,29 @@ public class SetSpawnPointExecutor implements CommandExecutor {
 			sender.sendMessage(ChatColor.YELLOW + "You do not have permission to use this command");
 			return true;
 		}
+		
+		if (!(sender instanceof Player)) {
+			sender.sendMessage("You must be a player to use this command.");
+			return true;
+		}
+		
+		Player player = (Player) sender;
 
-		// If there are 4 arguments it is [world] [x] [y] [z]
+		// If there are 3 arguments it is [x] [y] [z]
 		// This command can be used by players or on the console
-		if (args.length == 4) {
+		if (args.length == 3) {
+		
 
-			// Get the world specified by the user
-			World world = Bukkit.getServer().getWorld(args[0]);
+			// Get the user's world
+			World world = player.getLocation().getWorld();
 
-			// Make sure that the world specified by the user exists, otherwise it stops
-			// execution
-			// and says the world was not found
-			if (world == null) {
-				sender.sendMessage(ChatColor.YELLOW + "That world was not found.");
-				return false;
-			}
 
 			// Cast the inputs (Strings) to double. The method getDouble returns NaN if the
 			// string
 			// cannot be cast to a double
-			double x = GetDouble.getDouble(args[1]);
-			double y = GetDouble.getDouble(args[2]);
-			double z = GetDouble.getDouble(args[3]);
+			double x = GetDouble.getDouble(args[0]);
+			double y = GetDouble.getDouble(args[1]);
+			double z = GetDouble.getDouble(args[2]);
 
 			// Check that none of the values of x, y, z are NaN. If they are, tell the user
 			// and
@@ -105,24 +106,21 @@ public class SetSpawnPointExecutor implements CommandExecutor {
 			}
 			return true;
 
-		} else if (args.length == 6) {
+		} else if (args.length == 5) {
 
-			// If there are 6 arguments they are of the form [world] [x] [y] [z] [pitch]
-			// [yaw]
+			// If there are arguments they are of the form [x] [y] [z] [pitch] [yaw]
 			// This command can be used by players or console
-			// This case is the same as if args.length == 4 with the added float arguments
+			// This case is the same as if args.length == 3 with the added float arguments
 			// of pitch and yaw. getFloat works the same as getDouble so they are just added
 			// in.
-			World world = Bukkit.getServer().getWorld(args[0]);
-			if (world == null) {
-				sender.sendMessage("That world was not found.");
-				return false;
-			}
-			double x = GetDouble.getDouble(args[1]);
-			double y = GetDouble.getDouble(args[2]);
-			double z = GetDouble.getDouble(args[3]);
-			float pitch = GetFloat.getFloat(args[4]);
-			float yaw = GetFloat.getFloat(args[5]);
+			
+			// Get the user's world
+			World world = player.getLocation().getWorld();
+			double x = GetDouble.getDouble(args[0]);
+			double y = GetDouble.getDouble(args[1]);
+			double z = GetDouble.getDouble(args[2]);
+			float pitch = GetFloat.getFloat(args[3]);
+			float yaw = GetFloat.getFloat(args[4]);
 			if (Double.isNaN(x) || Double.isNaN(y) || Double.isNaN(z) || Float.isNaN(pitch) || Float.isNaN(yaw)) {
 				sender.sendMessage("One or more of the arguments provided is not a number.");
 				return false;
@@ -162,17 +160,6 @@ public class SetSpawnPointExecutor implements CommandExecutor {
 			return true;
 
 		} else if (args.length == 0) {
-			// If there are no arguments, then use the current location of the player using
-			// the command as the new spawn. This restricts use of this command with no
-			// arguments to only players, not the console, so first we make sure the use
-			// is a player.
-			if (!(sender instanceof Player)) {
-				sender.sendMessage("You must be a player to use this command with no arguments.");
-				return true;
-			}
-
-			// Cast sender to Player class so that we can use the getLocation method
-			Player player = (Player) sender;
 
 			// Create new spawn location comprised of the player's current location
 			// We don't use the constructor that just takes the player argument because

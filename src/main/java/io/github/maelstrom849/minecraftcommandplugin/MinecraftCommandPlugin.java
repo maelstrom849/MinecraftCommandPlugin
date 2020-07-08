@@ -21,6 +21,7 @@ public final class MinecraftCommandPlugin extends JavaPlugin {
 		this.getCommand("playerupdate").setExecutor(new PlayerUpdateExecutor(this));
 		this.getCommand("tpo").setExecutor(new TPOExecutor(this));
 		this.getCommand("tpm").setExecutor(new TPMExecutor(this));
+		this.getCommand("revertspawnpoint").setExecutor(new RevertSpawnPointExecutor(this));
 		
 		// Each listener is created
 		new LoginListener(this);

@@ -15,7 +15,7 @@ public class LoginListener implements Listener {
 	
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {
-		new PlayerUpdateTask(this.mcp, event.getPlayer()).runTaskLater(this.mcp, 100);
+		new PlayerUpdateTask(this.mcp, event.getPlayer()).runTaskLater(this.mcp, 40);
 	}
 
 }

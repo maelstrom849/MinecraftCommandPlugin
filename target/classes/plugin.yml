@@ -11,7 +11,7 @@ commands:
     usage: /<command> [player]
   setspawnpoint:
     description: This command sets the point that users will be teleported to with the spawn command. Can be used with no arguments to set spawn point to the current location, or 4 or 6 arguments to specify another location.
-    usage: /<command> ([world] [x] [y] [z] ([pitch] [yaw]))
+    usage: /<command> ([x] [y] [z] ([pitch] [yaw]))
   tp:
     description: Teleports player to specified point.
     usage: /<command> [x] [y] [z] or /<command> [x] [z]
@@ -24,6 +24,9 @@ commands:
   tpo:
     description: Teleports players to a new point offset by the amount given
     usage: /<command> [x] [y] [z]
+  revertspawnpoint:
+    description: Deletes the most recently set spawn point and reverts to the previous. Will not delete the last remaining spawn point.
+    usage: /<command>
 permissions:
   all:
     description: Basic permission for basic commands. Everyone has this by default, but this exists so it can be revoked

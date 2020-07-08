@@ -46,8 +46,9 @@ public class PlayerUpdateTask extends BukkitRunnable {
 			rs.first();
 			ArrayList<String> players = new ArrayList<>();
 			do {
-				rs.getString(1);
+				players.add(rs.getString(1));
 			} while (rs.next());
+			
 			
 			if (!(players.contains(this.player.getName()))) {
 				statement.executeUpdate("INSERT INTO Players (PlayerName) VALUES ('" + this.player.getName() + "');");
